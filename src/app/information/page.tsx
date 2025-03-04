@@ -1,6 +1,6 @@
 import Navigation from "../components/Navigation";
 import InfoMap from "../components/InfoMap";
-import { FaWhatsapp, FaFacebook, FaInstagram } from "react-icons/fa";
+import { Suspense } from "react";
 
 export default function Information() {
 	return (
@@ -25,10 +25,10 @@ export default function Information() {
 						<p>
 							<span className="font-semibold">Email:</span>{" "}
 							<a
-								href="mailto:courtownbmx@gmail.com"
+								href="mailto:courtownbmxracing@gmail.com"
 								className="text-purple-400 hover:text-yellow-400 transition-colors"
 							>
-								courtownbmx@gmail.com
+								courtownbmxracing@gmail.com
 							</a>
 						</p>
 						<p>
@@ -102,7 +102,11 @@ export default function Information() {
 						The track is located at Riverchapel Community Complex, Courtown, Co.
 						Wexford. See map below:
 					</p>
-					<InfoMap />
+					<Suspense
+						fallback={<div className="text-5xl text-white">Loading...</div>}
+					>
+						<InfoMap />
+					</Suspense>
 				</section>
 
 				{/* Track Rules Section */}
@@ -186,10 +190,10 @@ export default function Information() {
 					<p>
 						Contact us via email at{" "}
 						<a
-							href="mailto:courtownbmx@gmail.com"
+							href="mailto:courtownbmxracing@gmail.com"
 							className="text-purple-400 hover:text-yellow-400 transition-colors"
 						>
-							courtownbmx@gmail.com
+							courtownbmxracing@gmail.com
 						</a>{" "}
 						to learn more about how you can contribute.
 					</p>

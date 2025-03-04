@@ -10,8 +10,8 @@ export default function Welcome() {
 							<Image
 								src="/images/logo.png"
 								alt="Courtown BMX Logo"
-								width={192}
-								height={192}
+								width={300}
+								height={300}
 								className="object-contain"
 							/>
 						</div>

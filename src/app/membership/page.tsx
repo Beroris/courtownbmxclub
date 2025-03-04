@@ -22,8 +22,18 @@ export default function Membership() {
 						during official hours. Membership fees are as follows:
 					</p>
 
-					<div className="bg-stone-800 p-6 rounded-lg mb-8">
-						<div className="flex items-center space-x-2">
+					<div className="bg-stone-800 p-6 rounded-lg mb-8 flex flex-col">
+						<div className="flex space-x-2">
+							<span className="text-purple-400 mr-2">•</span>
+							<span className="font-semibold">
+								Club Membership Yearly (Per Person):
+							</span>
+							<span>€50</span>
+							<span className="text-purple-400 mr-2">•</span>
+							<span className="font-semibold">
+								Club Membership Yearly (Per Person):
+							</span>
+							<span>€50</span>
 							<span className="text-purple-400 mr-2">•</span>
 							<span className="font-semibold">
 								Club Membership Yearly (Per Person):
@@ -78,7 +88,8 @@ export default function Membership() {
 						<li className="flex items-start">
 							<span className="text-purple-400 mr-2">2.</span>
 							<div>
-								Navigate to "My Memberships" and select "Add Club Membership".
+								Navigate to &quot;My Memberships&quot; and select &quot;Add Club
+								Membership&quot;.
 							</div>
 						</li>
 						<li className="flex items-start">
@@ -92,10 +103,10 @@ export default function Membership() {
 					<p className="mt-8">
 						Please contact{" "}
 						<a
-							href="mailto:courtownbmx@gmail.com"
+							href="mailto:courtownbmxracing@gmail.com"
 							className="text-purple-400 hover:text-yellow-400 transition-colors"
 						>
-							courtownbmx@gmail.com
+							courtownbmxracing@gmail.com
 						</a>{" "}
 						for any membership-related inquiries or assistance with renewing
 						licenses.

@@ -16,14 +16,14 @@ export default function Events() {
 				<div className="mb-12">
 					<p className="text-lg mb-6">
 						Courtown BMX Club is a proud supporter of BMX racing and riding in
-						Ireland. Whether you're a beginner or an experienced rider, there
-						are plenty of exciting events and opportunities to participate in
-						BMX racing at the local, regional, and national levels.
+						Ireland. Whether you&apos;re a beginner or an experienced rider,
+						there are plenty of exciting events and opportunities to participate
+						in BMX racing at the local, regional, and national levels.
 					</p>
 					<p className="text-lg mb-6">
 						Racing is one of (if not THE best) way to improve your riding skills
-						and get faster. You can race at BMX events and its a great day out
-						for the whole family. You can view the full Irish BMX events
+						and get faster. You can race at BMX events and it&apos;s a great day
+						out for the whole family. You can view the full Irish BMX events
 						calendar{" "}
 						<a
 							href="https://www.cyclingireland.ie/bmx-events"
@@ -45,7 +45,7 @@ export default function Events() {
 					<p className="mb-4">
 						BMX racing events in Ireland are organized and overseen by{" "}
 						<span className="text-purple-400">
-							Cycling Ireland's BMX Commission
+							Cycling Ireland&apos;s BMX Commission
 						</span>
 						. These events include:
 					</p>
