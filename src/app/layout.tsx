@@ -8,7 +8,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-	title: "Courtown BMX Club",
+	title: {
+		default: "Courtown BMX Club",
+		template: "%s | Courtown BMX Club",
+	},
 	description:
 		"Home of BMX in the sunny south east, offering sessions for all ages and skill levels.",
 };

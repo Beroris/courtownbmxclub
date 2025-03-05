@@ -1,4 +1,10 @@
 import Navigation from "../components/Navigation";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Membership",
+	description: "Membership information for the club",
+};
 
 export default function Membership() {
 	return (
@@ -23,22 +29,25 @@ export default function Membership() {
 					</p>
 
 					<div className="bg-stone-800 p-6 rounded-lg mb-8 flex flex-col">
-						<div className="flex space-x-2">
-							<span className="text-purple-400 mr-2">•</span>
-							<span className="font-semibold">
-								Club Membership Yearly (Per Person):
-							</span>
-							<span>€50</span>
-							<span className="text-purple-400 mr-2">•</span>
-							<span className="font-semibold">
-								Club Membership Yearly (Per Person):
-							</span>
-							<span>€50</span>
-							<span className="text-purple-400 mr-2">•</span>
-							<span className="font-semibold">
-								Club Membership Yearly (Per Person):
-							</span>
-							<span>€50</span>
+						<span className="flex justify-center mr-2 font-bold text-2xl">
+							Club Membership Yearly
+						</span>
+						<div className="flex flex-col space-x-2">
+							<div>
+								<span className="text-purple-400 mr-2">•</span>
+								<span className="">First Member: </span>
+								<span className="font-bold">€50</span>
+							</div>
+							<div className="mt-5">
+								<span className="text-purple-400 mr-2">•</span>
+								<span className="">Second Member: </span>
+								<span className="font-bold">€35</span>
+							</div>
+							<div className="mt-5">
+								<span className="text-purple-400 mr-2">•</span>
+								<span className="">Whole Family: </span>
+								<span className="font-bold">€100</span>
+							</div>
 						</div>
 					</div>
 
@@ -55,7 +64,8 @@ export default function Membership() {
 						</a>
 						. Check out the{" "}
 						<a
-							href="/information"
+							href="https://membership.cyclingireland.ie/clubpage/Courtown%20BMX%20Club"
+							target="_blank"
 							className="text-purple-400 hover:text-yellow-400 transition-colors"
 						>
 							Club Page

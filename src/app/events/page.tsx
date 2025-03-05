@@ -1,4 +1,10 @@
 import Navigation from "../components/Navigation";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Events",
+	description: "Events and information for the club",
+};
 
 export default function Events() {
 	return (
@@ -26,7 +32,7 @@ export default function Events() {
 						out for the whole family. You can view the full Irish BMX events
 						calendar{" "}
 						<a
-							href="https://www.cyclingireland.ie/bmx-events"
+							href="https://www.cyclingireland.ie/events/find-an-event/"
 							className="text-purple-400 hover:text-yellow-400 transition-colors"
 							target="_blank"
 							rel="noopener noreferrer"
@@ -44,7 +50,7 @@ export default function Events() {
 					</h2>
 					<p className="mb-4">
 						BMX racing events in Ireland are organized and overseen by{" "}
-						<span className="text-purple-400">
+						<span className="font-[600]">
 							Cycling Ireland&apos;s BMX Commission
 						</span>
 						. These events include:
@@ -87,7 +93,7 @@ export default function Events() {
 							<div>
 								<span className="font-semibold">Find an Event:</span> Visit the{" "}
 								<a
-									href="https://www.cyclingireland.ie/bmx-events"
+									href="https://www.cyclingireland.ie/events/find-an-event/"
 									className="text-purple-400 hover:text-yellow-400 transition-colors"
 									target="_blank"
 									rel="noopener noreferrer"

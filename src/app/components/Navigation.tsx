@@ -77,29 +77,29 @@ export default function Navigation() {
 					{/* Desktop Social Links & Contact */}
 					<div className="hidden lg:flex items-center space-x-4">
 						<Link
-							href="https://instagram.com"
+							href="https://www.instagram.com/courtownbmx/"
 							target="_blank"
 							className="text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 						>
 							<FaInstagram className="h-5 w-5" />
 						</Link>
 						<Link
-							href="https://facebook.com"
+							href="https://www.facebook.com/people/Courtown-BMX/61559028380966/"
 							target="_blank"
 							className="text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 						>
 							<FaFacebook className="h-5 w-5" />
 						</Link>
 						<Link
-							href="https://whatsapp.com"
+							href="https://chat.whatsapp.com/I28VDPqtCbbIId4dubFHzK"
 							target="_blank"
 							className="text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 						>
 							<FaWhatsapp className="h-5 w-5" />
 						</Link>
 						<Link
-							href="/contact"
-							className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors"
+							href="/information"
+							className="bg-purple-600 text-white font-semibold px-4 py-2 rounded-md hover:bg-purple-700 transition-colors"
 						>
 							Contact
 						</Link>

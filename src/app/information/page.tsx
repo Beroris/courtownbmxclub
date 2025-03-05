@@ -1,6 +1,11 @@
 import Navigation from "../components/Navigation";
 import InfoMap from "../components/InfoMap";
-import { Suspense } from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Information",
+	description: "Information about the track and club",
+};
 
 export default function Information() {
 	return (
@@ -34,7 +39,7 @@ export default function Information() {
 						<p>
 							<span className="font-semibold">WhatsApp Group:</span>{" "}
 							<a
-								href="#"
+								href="https://www.instagram.com/courtownbmx/"
 								className="text-purple-400 hover:text-yellow-400 transition-colors"
 							>
 								Click Here
@@ -43,7 +48,7 @@ export default function Information() {
 						<p>
 							<span className="font-semibold">Facebook:</span>{" "}
 							<a
-								href="#"
+								href="https://www.facebook.com/people/Courtown-BMX/61559028380966/"
 								className="text-purple-400 hover:text-yellow-400 transition-colors"
 							>
 								Click Here
@@ -52,45 +57,13 @@ export default function Information() {
 						<p>
 							<span className="font-semibold">Instagram:</span>{" "}
 							<a
-								href="#"
+								href="https://chat.whatsapp.com/I28VDPqtCbbIId4dubFHzK"
 								className="text-purple-400 hover:text-yellow-400 transition-colors"
 							>
 								Click Here
 							</a>
 						</p>
 					</div>
-				</section>
-
-				{/* Contact Form */}
-				<section className="mb-12">
-					<h2 className="text-2xl font-bold mb-6 border-b border-stone-700 pb-2">
-						Contact Form
-					</h2>
-					<form className="space-y-4">
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-							<input
-								type="text"
-								placeholder="Name"
-								className="bg-stone-800 border border-stone-700 rounded-md p-2 w-full text-white"
-							/>
-							<input
-								type="email"
-								placeholder="Email"
-								className="bg-stone-800 border border-stone-700 rounded-md p-2 w-full text-white"
-							/>
-						</div>
-						<textarea
-							placeholder="Message"
-							rows={6}
-							className="bg-stone-800 border border-stone-700 rounded-md p-2 w-full text-white"
-						></textarea>
-						<button
-							type="submit"
-							className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition-colors"
-						>
-							Send
-						</button>
-					</form>
 				</section>
 
 				{/* Location Section */}
@@ -102,11 +75,7 @@ export default function Information() {
 						The track is located at Riverchapel Community Complex, Courtown, Co.
 						Wexford. See map below:
 					</p>
-					<Suspense
-						fallback={<div className="text-5xl text-white">Loading...</div>}
-					>
-						<InfoMap />
-					</Suspense>
+					<InfoMap />
 				</section>
 
 				{/* Track Rules Section */}
