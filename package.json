@@ -2,7 +2,7 @@
   "name": "courtown-bmx",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://bmx.beroris.com",
+  "homepage": "https://bmx.beroris.com/",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
