@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const images = [
-	`${process.env.NEXT_PUBLIC_BASE_PATH}/images/carousel/carousel1.jpg`,
-	`${process.env.NEXT_PUBLIC_BASE_PATH}/images/carousel/carousel2.jpeg`,
-	`${process.env.NEXT_PUBLIC_BASE_PATH}/images/carousel/carousel3.jpeg`,
-	`${process.env.NEXT_PUBLIC_BASE_PATH}/images/carousel/carousel4.jpeg`,
-	`${process.env.NEXT_PUBLIC_BASE_PATH}/images/carousel/carousel5.jpeg`,
-	`${process.env.NEXT_PUBLIC_BASE_PATH}/images/carousel/carousel6.jpeg`,
+	`/images/carousel/carousel1.jpg`,
+	`/images/carousel/carousel2.jpeg`,
+	`/images/carousel/carousel3.jpeg`,
+	`/images/carousel/carousel4.jpeg`,
+	`/images/carousel/carousel5.jpeg`,
+	`/images/carousel/carousel6.jpeg`,
 ];
 
 export default function Carousel() {
