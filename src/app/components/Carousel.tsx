@@ -4,12 +4,12 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const images = [
-	"/images/carousel/carousel1.jpg",
-	"/images/carousel/carousel2.jpeg",
-	"/images/carousel/carousel3.jpeg",
-	"/images/carousel/carousel4.jpeg",
-	"/images/carousel/carousel5.jpeg",
-	"/images/carousel/carousel6.jpeg",
+	`/courtownbmxclub/images/carousel/carousel1.jpg`,
+	`/courtownbmxclub/images/carousel/carousel2.jpeg`,
+	`/courtownbmxclub/images/carousel/carousel3.jpeg`,
+	`/courtownbmxclub/images/carousel/carousel4.jpeg`,
+	`/courtownbmxclub/images/carousel/carousel5.jpeg`,
+	`/courtownbmxclub/images/carousel/carousel6.jpeg`,
 ];
 
 export default function Carousel() {
