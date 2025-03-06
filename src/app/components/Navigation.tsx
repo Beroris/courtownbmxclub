@@ -18,7 +18,7 @@ export default function Navigation() {
 					<div className="flex-shrink-0">
 						<Link href="/" className="flex items-center">
 							<Image
-								src={`/courtownbmxclub/images/nav-logo.png`}
+								src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/nav-logo.png`}
 								alt="Courtown BMX"
 								width={2000}
 								height={2000}

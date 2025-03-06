@@ -8,7 +8,7 @@ export default function Welcome() {
 					<div className="flex justify-center">
 						<div className="w-64 h-64 rounded-full overflow-hidden bg-white dark:bg-stone-800 flex items-center justify-center shadow-lg">
 							<Image
-								src={`/courtownbmxclub/images/logo.png`}
+								src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/logo.png`}
 								alt="Courtown BMX Logo"
 								width={300}
 								height={300}
