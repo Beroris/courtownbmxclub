@@ -12,7 +12,7 @@ export default function Navigation() {
 	const pathname = usePathname();
 
 	return (
-		<nav className="fixed w-full z-50 bg-stone-50/50 dark:bg-stone-900/70 backdrop-blur-sm border-b border-stone-200/50 dark:border-stone-700/80">
+		<nav className="fixed w-full z-50 bg-stone-50/60 dark:bg-stone-900/70 backdrop-blur-sm border-b border-stone-200/50 dark:border-stone-700/80">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex items-center justify-between h-16">
 					<div className="flex-shrink-0">
@@ -36,7 +36,7 @@ export default function Navigation() {
 								className={`px-3 py-2 transition-colors font-semibold ${
 									pathname === "/"
 										? "text-yellow-400"
-										: "text-stone-700 dark:text-stone-200 hover:text-yellow-400"
+										: "text-stone-900 dark:text-stone-200 hover:text-yellow-400"
 								}`}
 							>
 								Home
@@ -46,7 +46,7 @@ export default function Navigation() {
 								className={`px-3 py-2 transition-colors font-semibold ${
 									pathname === "/events"
 										? "text-yellow-400"
-										: "text-stone-700 dark:text-stone-200 hover:text-yellow-400"
+										: "text-stone-900 dark:text-stone-200 hover:text-yellow-400"
 								}`}
 							>
 								Events
@@ -56,7 +56,7 @@ export default function Navigation() {
 								className={`px-3 py-2 transition-colors font-semibold ${
 									pathname === "/membership"
 										? "text-yellow-400"
-										: "text-stone-700 dark:text-stone-200 hover:text-yellow-400"
+										: "text-stone-900 dark:text-stone-200 hover:text-yellow-400"
 								}`}
 							>
 								Membership
@@ -66,7 +66,7 @@ export default function Navigation() {
 								className={`px-3 py-2 transition-colors font-semibold ${
 									pathname === "/information"
 										? "text-yellow-400"
-										: "text-stone-700 dark:text-stone-200 hover:text-yellow-400"
+										: "text-stone-900 dark:text-stone-200 hover:text-yellow-400"
 								}`}
 							>
 								Information
@@ -79,21 +79,21 @@ export default function Navigation() {
 						<Link
 							href="https://www.instagram.com/courtownbmx/"
 							target="_blank"
-							className="text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
+							className="text-stone-900 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 						>
 							<FaInstagram className="h-5 w-5" />
 						</Link>
 						<Link
 							href="https://www.facebook.com/people/Courtown-BMX/61559028380966/"
 							target="_blank"
-							className="text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
+							className="text-stone-900 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 						>
 							<FaFacebook className="h-5 w-5" />
 						</Link>
 						<Link
 							href="https://chat.whatsapp.com/I28VDPqtCbbIId4dubFHzK"
 							target="_blank"
-							className="text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
+							className="text-stone-900 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 						>
 							<FaWhatsapp className="h-5 w-5" />
 						</Link>
@@ -108,7 +108,7 @@ export default function Navigation() {
 					{/* Hamburger Menu Button */}
 					<button
 						onClick={() => setIsMenuOpen(!isMenuOpen)}
-						className="lg:hidden p-2 rounded-md text-stone-700 dark:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-700/50 transition-colors"
+						className="lg:hidden p-2 rounded-md text-stone-900 dark:text-stone-200 hover:bg-stone-200/50 dark:hover:bg-stone-900/50 transition-colors"
 					>
 						<span className="sr-only">Open menu</span>
 						<div className="w-6 h-5 relative flex items-center justify-center">
@@ -143,28 +143,28 @@ export default function Navigation() {
 				<div className="px-4 pt-2 pb-4 space-y-1">
 					<Link
 						href="/"
-						className="block px-3 py-2 text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
+						className="block px-3 py-2 text-stone-900 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 						onClick={() => setIsMenuOpen(false)}
 					>
 						Home
 					</Link>
 					<Link
 						href="/events"
-						className="block px-3 py-2 text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
+						className="block px-3 py-2 text-stone-900 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 						onClick={() => setIsMenuOpen(false)}
 					>
 						Events
 					</Link>
 					<Link
 						href="/membership"
-						className="block px-3 py-2 text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
+						className="block px-3 py-2 text-stone-900 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 						onClick={() => setIsMenuOpen(false)}
 					>
 						Membership
 					</Link>
 					<Link
 						href="/information"
-						className="block px-3 py-2 text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
+						className="block px-3 py-2 text-stone-900 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 						onClick={() => setIsMenuOpen(false)}
 					>
 						Information
@@ -175,7 +175,7 @@ export default function Navigation() {
 						<Link
 							href="https://instagram.com"
 							target="_blank"
-							className="text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
+							className="text-stone-900 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 							onClick={() => setIsMenuOpen(false)}
 						>
 							<FaInstagram className="h-5 w-5" />
@@ -183,7 +183,7 @@ export default function Navigation() {
 						<Link
 							href="https://facebook.com"
 							target="_blank"
-							className="text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
+							className="text-stone-900 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 							onClick={() => setIsMenuOpen(false)}
 						>
 							<FaFacebook className="h-5 w-5" />
@@ -191,7 +191,7 @@ export default function Navigation() {
 						<Link
 							href="https://whatsapp.com"
 							target="_blank"
-							className="text-stone-700 dark:text-stone-200 hover:text-yellow-400 transition-colors"
+							className="text-stone-900 dark:text-stone-200 hover:text-yellow-400 transition-colors"
 							onClick={() => setIsMenuOpen(false)}
 						>
 							<FaWhatsapp className="h-5 w-5" />

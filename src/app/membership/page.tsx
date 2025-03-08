@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function Membership() {
 	return (
-		<main className="min-h-screen bg-stone-900 text-white">
+		<main className="min-h-screen bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-50">
 			<Navigation />
 
 			{/* Hero Section with Title */}
@@ -28,7 +28,7 @@ export default function Membership() {
 						during official hours. Membership fees are as follows:
 					</p>
 
-					<div className="bg-stone-800 p-6 rounded-lg mb-8 flex flex-col">
+					<div className="bg-stone-200 dark:bg-stone-800 p-6 rounded-lg mb-8 flex flex-col">
 						<span className="flex justify-center mr-2 font-bold text-2xl">
 							Club Membership Yearly
 						</span>

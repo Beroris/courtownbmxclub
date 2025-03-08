@@ -6,7 +6,7 @@ export default function Welcome() {
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
 					<div className="flex justify-center">
-						<div className="w-64 h-64 rounded-full overflow-hidden bg-white dark:bg-stone-800 flex items-center justify-center shadow-lg">
+						<div className="w-64 h-64 rounded-full overflow-hidden bg-bg dark:bg-bg flex items-center justify-center shadow-lg">
 							<Image
 								src={`/images/logo.png`}
 								alt="Courtown BMX Logo"
@@ -16,7 +16,7 @@ export default function Welcome() {
 							/>
 						</div>
 					</div>
-					<div className="text-stone-900 dark:text-stone-100">
+					<div className="text-stone-900 dark:text-stone-50">
 						<h2 className="text-3xl font-bold mb-6 underline">
 							Welcome to Courtown BMX
 						</h2>

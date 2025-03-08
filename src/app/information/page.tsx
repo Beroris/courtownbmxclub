@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function Information() {
 	return (
-		<main className="min-h-screen bg-stone-900 text-white">
+		<main className="min-h-screen bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-50">
 			<Navigation />
 
 			{/* Hero Section with Title */}
