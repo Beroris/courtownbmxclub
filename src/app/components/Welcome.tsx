@@ -6,11 +6,11 @@ export default function Welcome() {
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
 					<div className="flex justify-center">
-						<div className="w-64 h-64 rounded-full overflow-hidden bg-bg dark:bg-bg flex items-center justify-center shadow-lg">
+						<div className="w-84 h-84 rounded-full overflow-hidden bg-bg dark:bg-bg flex items-center justify-center shadow-lg">
 							<Image
 								src={`/images/logo.png`}
 								alt="Courtown BMX Logo"
-								width={300}
+								width={500}
 								height={300}
 								className="object-contain"
 							/>
@@ -22,16 +22,20 @@ export default function Welcome() {
 						</h2>
 						<div className="space-y-4">
 							<p>
-								Established in 2016, Courtown BMX Club is the home of BMX in the
-								sunny south east, offering sessions to excite and include
-								everyone from toddlers to talls and get as many bums on bikes as
-								we can.
+								Courtown BMX Club was established in 2016 and, since then, has
+								provided an informal and friendly atmosphere for riders and
+								families alike.
 							</p>
 							<p>
-								Located in Riverchapel Community Complex, feel free to pop down
-								and enjoy a ride.
+								At Courtown BMX we are all-inclusive and encourage people of all
+								ages and from all backgrounds to try out a fun, exciting outdoor
+								pursuit, whether it be for leisure, socialising or competitive
+								sport.
 							</p>
-							<p>All ages, sizes and skill levels are welcome.</p>
+							<p>
+								Why not pop down to our track at Riverchapel Community Complex
+								and try it out?!
+							</p>
 						</div>
 					</div>
 				</div>
