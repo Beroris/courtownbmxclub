@@ -11,13 +11,35 @@ export default function LogPage() {
 	const [paymentMethod, setPaymentMethod] = useState("online");
 	const [message, setMessage] = useState("");
 
+	const requiresPayment = membershipType === "guest";
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setMessage("");
 
+		if (!name || (!requiresPayment && !licenseNumber) || !membershipType) {
+			setMessage("Error: All fields are required!");
+			return;
+		}
+
+		// Validate that the name contains only letters (including accented letters) and spaces
+		const namePattern = /^[A-Za-zÀ-ÿ\s]+$/;
+		if (!namePattern.test(name)) {
+			setMessage("Error: Name must contain only letters and spaces.");
+			return;
+		}
+
+		// Validate that the license number contains at least one number (for members)
+		if (!requiresPayment) {
+			const licensePattern = /\d/;
+			if (!licensePattern.test(licenseNumber)) {
+				setMessage("Error: Invalid license number");
+				return;
+			}
+		}
+
 		try {
-			// Directly insert into Supabase (no MockAPI check)
-			const { data, error } = await supabase.from("log_entries").insert([
+			const { error } = await supabase.from("log_entries").insert([
 				{
 					name,
 					license_number: membershipType === "member" ? licenseNumber : null,
@@ -34,7 +56,7 @@ export default function LogPage() {
 			// Clear the form
 			setName("");
 			setLicenseNumber("");
-			setMembershipType("guest");
+			setMembershipType("member");
 			setPaymentMethod("online");
 			setMessage("Log entry saved successfully!");
 		} catch (err: any) {
@@ -50,8 +72,6 @@ export default function LogPage() {
 			setMessage("Online payment functionality coming soon!");
 		}
 	};
-
-	const requiresPayment = membershipType === "guest";
 
 	return (
 		<main className="min-h-screen bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-50">
@@ -127,9 +147,7 @@ export default function LogPage() {
 										Payment Required
 									</h3>
 									<p className="text-yellow-700 dark:text-yellow-300 text-sm">
-										{membershipType === "guest"
-											? "Guest fee: €5 (First session is free)"
-											: "Daily fee: €5"}
+										Guest fee: €5 (First session is free)
 									</p>
 								</div>
 
