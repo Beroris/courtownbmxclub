@@ -41,6 +41,7 @@ export default function Information() {
 							<a
 								href="https://www.instagram.com/courtownbmx/"
 								className="text-purple-400 hover:text-yellow-400 transition-colors"
+								target="_blank"
 							>
 								Click Here
 							</a>
@@ -50,6 +51,7 @@ export default function Information() {
 							<a
 								href="https://www.facebook.com/people/Courtown-BMX/61559028380966/"
 								className="text-purple-400 hover:text-yellow-400 transition-colors"
+								target="_blank"
 							>
 								Click Here
 							</a>
@@ -59,6 +61,7 @@ export default function Information() {
 							<a
 								href="https://chat.whatsapp.com/I28VDPqtCbbIId4dubFHzK"
 								className="text-purple-400 hover:text-yellow-400 transition-colors"
+								target="_blank"
 							>
 								Click Here
 							</a>

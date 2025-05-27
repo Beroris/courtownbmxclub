@@ -2,11 +2,13 @@
 
 import React, { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import Navigation from "../components/Navigation";
 
 export default function LogPage() {
 	const [name, setName] = useState("");
 	const [licenseNumber, setLicenseNumber] = useState("");
-	const [membershipType, setMembershipType] = useState("guest");
+	const [membershipType, setMembershipType] = useState("member");
+	const [paymentMethod, setPaymentMethod] = useState("online");
 	const [message, setMessage] = useState("");
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -14,31 +16,13 @@ export default function LogPage() {
 		setMessage("");
 
 		try {
-			const res = await fetch(
-				`https://67d59417286fdac89bbfc0e0.mockapi.io/license-numbers?license_number=${licenseNumber}`
-			);
-
-			if (!res.ok) {
-				throw new Error(`Failed to fetch from MockAPI: ${res.statusText}`);
-			}
-
-			const dataFromMock = await res.json();
-
-			// If Option B (fetching all), you'd filter:
-			// const validLicense = dataFromMock.find((item: any) => item.license_number === licenseNumber);
-
-			// If Option A, dataFromMock should be an array of matching items. If it's empty, there's no match.
-			if (!Array.isArray(dataFromMock) || dataFromMock.length === 0) {
-				setMessage("Error: Invalid license number");
-				return;
-			}
-
-			// 2) If valid, proceed to insert into Supabase
+			// Directly insert into Supabase (no MockAPI check)
 			const { data, error } = await supabase.from("log_entries").insert([
 				{
 					name,
-					license_number: licenseNumber,
+					license_number: membershipType === "member" ? licenseNumber : null,
 					membership_type: membershipType,
+					payment_method: requiresPayment ? paymentMethod : null,
 				},
 			]);
 
@@ -47,94 +31,163 @@ export default function LogPage() {
 				return;
 			}
 
-			// 3) Clear the form
+			// Clear the form
 			setName("");
 			setLicenseNumber("");
 			setMembershipType("guest");
+			setPaymentMethod("online");
 			setMessage("Log entry saved successfully!");
 		} catch (err: any) {
 			setMessage(`Error: ${err.message}`);
 		}
 	};
 
+	const handlePayment = () => {
+		// Placeholder for payment functionality
+		if (paymentMethod === "cash") {
+			setMessage("Please pay €5 in cash to staff member.");
+		} else {
+			setMessage("Online payment functionality coming soon!");
+		}
+	};
+
+	const requiresPayment = membershipType === "guest";
+
 	return (
-		<div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-			<div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
-				<h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-					Log Book
-				</h1>
+		<main className="min-h-screen bg-stone-50 text-stone-900 dark:bg-stone-900 dark:text-stone-50">
+			<Navigation />
 
-				<form onSubmit={handleSubmit} className="space-y-6">
-					<div className="space-y-2">
-						<label className="block text-sm font-medium text-gray-700">
-							Name:
-						</label>
-						<input
-							type="text"
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-							required
-							className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm
-                         focus:outline-none focus:ring-2 focus:ring-orange-500
-                         focus:border-orange-500"
-						/>
-					</div>
-
-					<div className="space-y-2">
-						<label className="block text-sm font-medium text-gray-700">
-							License Number:
-						</label>
-						<input
-							type="text"
-							value={licenseNumber}
-							onChange={(e) => setLicenseNumber(e.target.value)}
-							required
-							className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm
-                         focus:outline-none focus:ring-2 focus:ring-orange-500
-                         focus:border-orange-500"
-						/>
-					</div>
-
-					<div className="space-y-2">
-						<label className="block text-sm font-medium text-gray-700">
-							Membership Type:
-						</label>
-						<select
-							value={membershipType}
-							onChange={(e) => setMembershipType(e.target.value)}
-							className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm
-                         focus:outline-none focus:ring-2 focus:ring-orange-500
-                         focus:border-orange-500"
-						>
-							<option value="guest">Guest</option>
-							<option value="daily">Daily</option>
-							<option value="member">Member</option>
-							<option value="yearly">Yearly</option>
-						</select>
-					</div>
-
-					<button
-						type="submit"
-						className="w-full bg-orange-600 text-white py-2 px-4 rounded-md
-                       hover:bg-orange-700 focus:outline-none focus:ring-2
-                       focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200"
-					>
-						Submit
-					</button>
-				</form>
-
-				{message && (
-					<p
-						className={`mt-4 p-4 rounded-md ${
-							message.includes("Error")
-								? "bg-red-100 text-red-700"
-								: "bg-green-100 text-green-700"
-						}`}
-					>
-						{message}
-					</p>
-				)}
+			{/* Hero Section with Title */}
+			<div className="pt-24 pb-12">
+				<h1 className="text-5xl font-bold text-center">Log Book</h1>
 			</div>
-		</div>
+
+			{/* Main Content */}
+			<div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+				<div className="bg-white dark:bg-stone-800 rounded-xl shadow-lg border border-stone-200/50 dark:border-stone-700/80 p-8">
+					<form onSubmit={handleSubmit} className="space-y-6">
+						<div className="space-y-2">
+							<label
+								htmlFor="name"
+								className="block text-base font-semibold text-stone-800 dark:text-stone-100"
+							>
+								Name
+							</label>
+							<input
+								id="name"
+								type="text"
+								value={name}
+								onChange={(e) => setName(e.target.value)}
+								required
+								className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
+							/>
+						</div>
+
+						<div className="space-y-2">
+							<label
+								htmlFor="membership"
+								className="block text-base font-semibold text-stone-800 dark:text-stone-100"
+							>
+								Membership Type
+							</label>
+							<select
+								id="membership"
+								value={membershipType}
+								onChange={(e) => setMembershipType(e.target.value)}
+								className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 focus-visible:ring-yellow-400 focus-visible:border-yellow-400 transition"
+							>
+								<option value="member">Member</option>
+								<option value="guest">Guest</option>
+							</select>
+						</div>
+
+						{!requiresPayment && (
+							<div className="space-y-2">
+								<label
+									htmlFor="license"
+									className="block text-base font-semibold text-stone-800 dark:text-stone-100"
+								>
+									License Number
+								</label>
+								<input
+									id="license"
+									type="text"
+									value={licenseNumber}
+									onChange={(e) => setLicenseNumber(e.target.value)}
+									required
+									className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
+								/>
+							</div>
+						)}
+
+						{requiresPayment && (
+							<div className="space-y-4">
+								<div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+									<h3 className="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+										Payment Required
+									</h3>
+									<p className="text-yellow-700 dark:text-yellow-300 text-sm">
+										{membershipType === "guest"
+											? "Guest fee: €5 (First session is free)"
+											: "Daily fee: €5"}
+									</p>
+								</div>
+
+								{membershipType === "guest" && (
+									<div className="space-y-2">
+										<label
+											htmlFor="payment-method"
+											className="block text-base font-semibold text-stone-800 dark:text-stone-100"
+										>
+											Payment Method
+										</label>
+										<select
+											id="payment-method"
+											value={paymentMethod}
+											onChange={(e) => setPaymentMethod(e.target.value)}
+											className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 focus-visible:ring-yellow-400 focus-visible:border-yellow-400 transition"
+										>
+											<option value="online">Online Payment</option>
+											<option value="cash">Pay in Cash</option>
+										</select>
+									</div>
+								)}
+
+								<div className="flex justify-center">
+									<button
+										type="button"
+										onClick={handlePayment}
+										className="max-w-xs w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+									>
+										{paymentMethod === "cash"
+											? "Confirm Cash Payment"
+											: "Pay Online"}
+									</button>
+								</div>
+							</div>
+						)}
+
+						<button
+							type="submit"
+							className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg shadow transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+						>
+							Submit
+						</button>
+					</form>
+
+					{message && (
+						<p
+							className={`mt-6 p-4 rounded-lg text-center font-semibold text-base transition-all duration-200 ${
+								message.includes("Error")
+									? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
+									: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+							}`}
+						>
+							{message}
+						</p>
+					)}
+				</div>
+			</div>
+		</main>
 	);
 }

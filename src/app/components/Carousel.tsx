@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 
 const images = [
@@ -14,27 +14,90 @@ const images = [
 
 export default function Carousel() {
 	const [currentIndex, setCurrentIndex] = useState(0);
+	const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+	const [isTransitioning, setIsTransitioning] = useState(false);
+	const timerRef = useRef<NodeJS.Timeout | null>(null);
+	const autoMoveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-	useEffect(() => {
-		const timer = setInterval(() => {
-			setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-		}, 5000);
-
-		return () => clearInterval(timer);
+	// Clear any existing timers
+	const clearTimers = useCallback(() => {
+		if (timerRef.current) {
+			clearInterval(timerRef.current);
+			timerRef.current = null;
+		}
+		if (autoMoveTimeoutRef.current) {
+			clearTimeout(autoMoveTimeoutRef.current);
+			autoMoveTimeoutRef.current = null;
+		}
 	}, []);
 
-	const nextSlide = () => {
-		setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-	};
+	// Start automatic movement
+	const startAutoPlay = useCallback(() => {
+		if (!isAutoPlaying) return;
 
-	const prevSlide = () => {
-		setCurrentIndex(
-			(prevIndex) => (prevIndex - 1 + images.length) % images.length
-		);
-	};
+		clearTimers();
+		timerRef.current = setInterval(() => {
+			setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+		}, 5000);
+	}, [isAutoPlaying, clearTimers]);
+
+	// Handle manual navigation
+	const handleManualNavigation = useCallback(
+		(newIndex: number) => {
+			if (isTransitioning) return; // Prevent rapid clicking
+
+			setIsTransitioning(true);
+			setCurrentIndex(newIndex);
+
+			// Pause auto-play temporarily after manual interaction
+			setIsAutoPlaying(false);
+			clearTimers();
+
+			// Resume auto-play after 10 seconds of no interaction
+			autoMoveTimeoutRef.current = setTimeout(() => {
+				setIsAutoPlaying(true);
+			}, 10000);
+
+			// Reset transition state
+			setTimeout(() => {
+				setIsTransitioning(false);
+			}, 500); // Match transition duration
+		},
+		[isTransitioning, clearTimers]
+	);
+
+	const nextSlide = useCallback(() => {
+		const newIndex = (currentIndex + 1) % images.length;
+		handleManualNavigation(newIndex);
+	}, [currentIndex, handleManualNavigation]);
+
+	const prevSlide = useCallback(() => {
+		const newIndex = (currentIndex - 1 + images.length) % images.length;
+		handleManualNavigation(newIndex);
+	}, [currentIndex, handleManualNavigation]);
+
+	const goToSlide = useCallback(
+		(index: number) => {
+			handleManualNavigation(index);
+		},
+		[handleManualNavigation]
+	);
+
+	// Set up automatic movement
+	useEffect(() => {
+		if (isAutoPlaying) {
+			startAutoPlay();
+		}
+		return clearTimers;
+	}, [isAutoPlaying, startAutoPlay, clearTimers]);
+
+	// Cleanup on unmount
+	useEffect(() => {
+		return clearTimers;
+	}, [clearTimers]);
 
 	return (
-		<div className="relative w-full h-[70vh] overflow-hidden">
+		<div className="relative w-full h-[70vh] overflow-hidden group">
 			{/* Image Container */}
 			<div className="absolute inset-0">
 				<div
@@ -77,13 +140,22 @@ export default function Carousel() {
 				</div>
 			</div>
 
-			{/* Navigation buttons */}
+			{/* Enhanced Navigation buttons with improved animations */}
 			<button
 				onClick={prevSlide}
-				className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition-colors transform hover:scale-110 duration-200"
+				disabled={isTransitioning}
+				className="absolute left-4 top-1/2 -translate-y-1/2
+					bg-black/50 backdrop-blur-sm text-white p-3 rounded-full
+					transition-all duration-300 ease-out
+					hover:bg-black/80 hover:scale-110 hover:shadow-lg
+					active:scale-95 active:bg-black/90
+					disabled:opacity-50 disabled:hover:scale-100
+					group-hover:translate-x-1 group-hover:bg-black/60
+					focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black/20"
+				aria-label="Previous image"
 			>
 				<svg
-					className="w-6 h-6"
+					className="w-6 h-6 transition-transform duration-200 ease-out hover:scale-110"
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"
@@ -91,17 +163,27 @@ export default function Carousel() {
 					<path
 						strokeLinecap="round"
 						strokeLinejoin="round"
-						strokeWidth={2}
+						strokeWidth={2.5}
 						d="M15 19l-7-7 7-7"
 					/>
 				</svg>
 			</button>
+
 			<button
 				onClick={nextSlide}
-				className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition-colors transform hover:scale-110 duration-200"
+				disabled={isTransitioning}
+				className="absolute right-4 top-1/2 -translate-y-1/2
+					bg-black/50 backdrop-blur-sm text-white p-3 rounded-full
+					transition-all duration-300 ease-out
+					hover:bg-black/80 hover:scale-110 hover:shadow-lg
+					active:scale-95 active:bg-black/90
+					disabled:opacity-50 disabled:hover:scale-100
+					group-hover:-translate-x-1 group-hover:bg-black/60
+					focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black/20"
+				aria-label="Next image"
 			>
 				<svg
-					className="w-6 h-6"
+					className="w-6 h-6 transition-transform duration-200 ease-out hover:scale-110"
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"
@@ -109,25 +191,41 @@ export default function Carousel() {
 					<path
 						strokeLinecap="round"
 						strokeLinejoin="round"
-						strokeWidth={2}
+						strokeWidth={2.5}
 						d="M9 5l7 7-7 7"
 					/>
 				</svg>
 			</button>
 
-			{/* Dots indicator */}
+			{/* Enhanced Dots indicator */}
 			<div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3">
 				{images.map((_, index) => (
 					<button
 						key={index}
-						onClick={() => setCurrentIndex(index)}
-						className={`w-2.5 h-2.5 rounded-full transition-all duration-300 transform hover:scale-125 ${
-							index === currentIndex
-								? "bg-white scale-110"
-								: "bg-white/50 hover:bg-white/75"
-						}`}
+						onClick={() => goToSlide(index)}
+						disabled={isTransitioning}
+						className={`h-2.5 transition-all duration-300 ease-out transform
+							hover:scale-125 active:scale-110
+							focus:outline-none focus:ring-1 focus:ring-white/50 focus:ring-offset-1 focus:ring-offset-black/20 ${
+								index === currentIndex
+									? "w-5 bg-white scale-110 shadow-lg rounded-full"
+									: "w-2.5 bg-white/50 hover:bg-white/75 rounded-full"
+							}`}
+						aria-label={`Go to image ${index + 1}`}
 					/>
 				))}
+			</div>
+
+			{/* Auto-play indicator */}
+			<div className="absolute top-4 right-4 flex items-center space-x-2 text-white/70 text-sm">
+				<div
+					className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+						isAutoPlaying ? "bg-green-400 animate-pulse" : "bg-gray-400"
+					}`}
+				/>
+				<span className="hidden sm:block">
+					{isAutoPlaying ? "Auto" : "Manual"}
+				</span>
 			</div>
 		</div>
 	);
