@@ -259,10 +259,6 @@ export default function Home() {
 										<span className="text-green-500 mr-2">•</span>
 										Cycling Ireland license
 									</li>
-									<li className="flex items-start">
-										<span className="text-green-500 mr-2">•</span>
-										BMX bike only
-									</li>
 								</ul>
 							</div>
 						</div>
