@@ -13,7 +13,9 @@ export default function Events() {
 
 			{/* Hero Section with Title */}
 			<div className="pt-24 pb-12">
-				<h1 className="text-5xl font-bold text-center">Courtown BMX Events</h1>
+				<h1 className="text-5xl font-bold text-center text-purple-600 dark:text-purple-400">
+					Courtown BMX Events
+				</h1>
 			</div>
 
 			{/* Main Content */}
@@ -22,9 +24,11 @@ export default function Events() {
 				<div className="mb-12">
 					<p className="text-lg mb-6">
 						Courtown BMX Club is a proud supporter of BMX racing and riding in
-						Ireland. Whether you&apos;re a beginner or an experienced rider,
-						there are plenty of exciting events and opportunities to participate
-						in BMX racing at the local, regional, and national levels.
+						Ireland. Whether you&apos;re a{" "}
+						<span className="text-white">beginner</span> or an{" "}
+						<span className="text-white">experienced rider</span>, there are
+						plenty of exciting events and opportunities to participate in BMX
+						racing at the local, regional, and national levels.
 					</p>
 					<p className="text-lg mb-6">
 						Racing is one of (if not THE best) way to improve your riding skills
@@ -45,7 +49,7 @@ export default function Events() {
 
 				{/* BMX Events in Ireland Section */}
 				<section className="mb-12">
-					<h2 className="text-2xl font-bold mb-6 border-b border-stone-700 pb-2">
+					<h2 className="text-2xl font-bold mb-6 border-b border-stone-700 pb-2 text-purple-600 dark:text-purple-400">
 						BMX Events in Ireland
 					</h2>
 					<p className="mb-4">
@@ -57,21 +61,21 @@ export default function Events() {
 					</p>
 					<ul className="space-y-4 ml-6">
 						<li className="flex items-start">
-							<span className="text-purple-400 mr-2">•</span>
+							<span className="text-yellow-400 mr-2">•</span>
 							<div>
 								<span className="font-semibold">Regional Races:</span> Great for
 								gaining experience and enjoying friendly competition.
 							</div>
 						</li>
 						<li className="flex items-start">
-							<span className="text-purple-400 mr-2">•</span>
+							<span className="text-yellow-400 mr-2">•</span>
 							<div>
 								<span className="font-semibold">National Series:</span> Brings
 								together the best riders from across the country.
 							</div>
 						</li>
 						<li className="flex items-start">
-							<span className="text-purple-400 mr-2">•</span>
+							<span className="text-yellow-400 mr-2">•</span>
 							<div>
 								<span className="font-semibold">
 									Training and Coaching Days:
@@ -84,12 +88,12 @@ export default function Events() {
 
 				{/* How to Get Involved Section */}
 				<section className="mb-12">
-					<h2 className="text-2xl font-bold mb-6 border-b border-stone-700 pb-2">
+					<h2 className="text-2xl font-bold mb-6 border-b border-stone-700 pb-2 text-purple-600 dark:text-purple-400">
 						How to Get Involved
 					</h2>
 					<ol className="space-y-4 ml-6">
 						<li className="flex items-start">
-							<span className="text-purple-400 mr-2">1.</span>
+							<span className="text-yellow-400 mr-2">1.</span>
 							<div>
 								<span className="font-semibold">Find an Event:</span> Visit the{" "}
 								<a
@@ -104,14 +108,14 @@ export default function Events() {
 							</div>
 						</li>
 						<li className="flex items-start">
-							<span className="text-purple-400 mr-2">2.</span>
+							<span className="text-yellow-400 mr-2">2.</span>
 							<div>
 								<span className="font-semibold">Prepare to Race:</span> Get the
 								right gear and a BMX race license. Beginners are welcome!
 							</div>
 						</li>
 						<li className="flex items-start">
-							<span className="text-purple-400 mr-2">3.</span>
+							<span className="text-yellow-400 mr-2">3.</span>
 							<div>
 								<span className="font-semibold">Join the Fun:</span> Meet other
 								riders, improve your skills, and enjoy the thrill of BMX racing.
@@ -122,24 +126,24 @@ export default function Events() {
 
 				{/* Why Attend Section */}
 				<section>
-					<h2 className="text-2xl font-bold mb-6 border-b border-stone-700 pb-2">
+					<h2 className="text-2xl font-bold mb-6 border-b border-stone-700 pb-2 text-purple-600 dark:text-purple-400">
 						Why Attend BMX Events?
 					</h2>
 					<ul className="space-y-4 ml-6">
 						<li className="flex items-start">
-							<span className="text-purple-400 mr-2">•</span>
+							<span className="text-yellow-400 mr-2">•</span>
 							Experience the excitement of competitive BMX racing.
 						</li>
 						<li className="flex items-start">
-							<span className="text-purple-400 mr-2">•</span>
+							<span className="text-yellow-400 mr-2">•</span>
 							Learn from experienced riders and coaches.
 						</li>
 						<li className="flex items-start">
-							<span className="text-purple-400 mr-2">•</span>
+							<span className="text-yellow-400 mr-2">•</span>
 							Be part of a supportive BMX community.
 						</li>
 						<li className="flex items-start">
-							<span className="text-purple-400 mr-2">•</span>
+							<span className="text-yellow-400 mr-2">•</span>
 							Test your skills on tracks designed for all levels.
 						</li>
 					</ul>

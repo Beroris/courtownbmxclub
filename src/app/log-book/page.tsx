@@ -168,7 +168,7 @@ export default function LogPage() {
 										className="text-yellow-400 focus:ring-yellow-400"
 									/>
 									<span className="text-stone-700 dark:text-stone-300">
-										Courtown BMX
+										Lucan BMX
 									</span>
 								</label>
 								<label className="flex items-center space-x-3">
@@ -358,7 +358,7 @@ export default function LogPage() {
 									activities at the BMX track.
 								</p>
 								<p>
-									I grant permission for the use of the rider's name and/or
+									I grant permission for the use of the rider&apos;s name and/or
 									likeness relating to their participation at the track.
 								</p>
 							</div>
