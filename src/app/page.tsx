@@ -305,7 +305,9 @@ export default function Home() {
 							Experience BMX Racing
 						</h2>
 						<p className="text-lg md:text-xl mb-10">
-							Professional track • Expert coaching • Family-friendly atmosphere
+							Professional track <span className="text-yellow-400">•</span>{" "}
+							Expert coaching <span className="text-yellow-400">•</span>{" "}
+							Family-friendly atmosphere
 						</p>
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
 							<div className="bg-black/20 backdrop-blur-sm rounded-lg p-4 md:p-6 transform hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 ease-out">

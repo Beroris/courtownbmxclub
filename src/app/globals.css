@@ -1,5 +1,69 @@
 @import "tailwindcss";
 
+/* Smooth scrolling for the entire site */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for fixed navigation */
+}
+
+/* Enhanced smooth scrolling with momentum on iOS and better performance */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth momentum scrolling for all scrollable elements */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Better scrolling performance */
+.scroll-smooth {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Smoother scrolling for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9; /* stone-100 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9333ea; /* purple-600 */
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7e22ce; /* purple-700 */
+}
+
+/* Dark mode scrollbar */
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-track {
+    background: #0c0a09; /* stone-950 */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #a855f7; /* purple-500 */
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9333ea; /* purple-600 */
+  }
+}
+
 /* Move utility classes directly into CSS since @layer isn't needed in v4 */
 .nav-link {
   color: white;
