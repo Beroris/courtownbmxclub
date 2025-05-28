@@ -179,7 +179,7 @@ export default function Home() {
 							<p className="text-stone-700 dark:text-stone-300">
 								Never ridden BMX before? No problem! We provide guidance,
 								support, and a welcoming environment for first-time riders. Your
-								first session is completely free to try.
+								first 3 sessions are completely free to try.
 							</p>
 						</div>
 						<div className="bg-white dark:bg-stone-700 p-6 rounded-lg shadow-md transform hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg transition-all duration-300 ease-out delay-100">
@@ -234,7 +234,7 @@ export default function Home() {
 									</p>
 								</div>
 								<p className="text-sm mt-4">
-									Non-members: €5 per session (first session free!)
+									Non-members: €5 per session (first 3 sessions free!)
 								</p>
 							</div>
 						</div>

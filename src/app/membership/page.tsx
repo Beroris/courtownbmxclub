@@ -73,7 +73,7 @@ export default function Membership() {
 						<div className="mt-6 text-center">
 							<p className="text-sm text-stone-600 dark:text-stone-400">
 								<span className="font-semibold">Non-members:</span> €5 per
-								session (first session free!)
+								session (first 3 sessions free!)
 							</p>
 						</div>
 					</div>
@@ -181,9 +181,9 @@ export default function Membership() {
 					</h2>
 					<p className="text-lg">
 						Non-members are welcome to use the track during official hours but
-						must pay a €5 fee per session (First session is free). Riders must
-						have an active Cycling Ireland License to participate. Without a
-						license, riders are not insured and cannot use the track.
+						must pay a €5 fee per session (First 3 sessions are free). Riders
+						must have an active Cycling Ireland License to participate. Without
+						a license, riders are not insured and cannot use the track.
 					</p>
 				</section>
 			</div>
