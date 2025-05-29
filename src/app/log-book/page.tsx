@@ -25,7 +25,7 @@ export default function LogPage() {
 			!name ||
 			!phoneNumber ||
 			!waiverAgreed ||
-			(!requiresPayment && !licenseNumber) ||
+			!licenseNumber ||
 			!membershipType
 		) {
 			setMessage(
@@ -48,24 +48,39 @@ export default function LogPage() {
 			return;
 		}
 
-		// Validate that the license number contains at least one number (for members)
-		if (!requiresPayment) {
-			const licensePattern = /\d/;
-			if (!licensePattern.test(licenseNumber)) {
-				setMessage("Error: Invalid license number");
-				return;
+		// Validate that the license number contains at least one number
+		const licensePattern = /\d/;
+		if (!licensePattern.test(licenseNumber)) {
+			setMessage("Error: Invalid license number");
+			return;
+		}
+
+		// Determine payment status and method based on membership type
+		let paymentStatus = null;
+		let finalPaymentMethod = null;
+
+		if (membershipType === "member") {
+			paymentStatus = "yearly";
+			finalPaymentMethod = "member";
+		} else if (membershipType === "guest") {
+			if (paymentMethod === "cash") {
+				paymentStatus = "cash";
+			} else {
+				paymentStatus = null; // For online payments, will be updated when payment is processed
 			}
+			finalPaymentMethod = paymentMethod;
 		}
 
 		try {
 			const { error } = await supabase.from("log_entries").insert([
 				{
 					name,
-					license_number: membershipType === "member" ? licenseNumber : null,
+					license_number: licenseNumber,
 					phone_number: phoneNumber,
 					club_affiliation: clubAffiliation,
 					membership_type: membershipType,
-					payment_method: requiresPayment ? paymentMethod : null,
+					payment_method: finalPaymentMethod,
+					payment_status: paymentStatus,
 					waiver_agreed: waiverAgreed,
 				},
 			]);
@@ -162,13 +177,26 @@ export default function LogPage() {
 									<input
 										type="radio"
 										name="club"
+										value="lucan"
+										checked={clubAffiliation === "lucan"}
+										onChange={(e) => setClubAffiliation(e.target.value)}
+										className="text-yellow-400 focus:ring-yellow-400"
+									/>
+									<span className="text-stone-700 dark:text-stone-300">
+										Lucan BMX
+									</span>
+								</label>
+								<label className="flex items-center space-x-3">
+									<input
+										type="radio"
+										name="club"
 										value="courtown"
 										checked={clubAffiliation === "courtown"}
 										onChange={(e) => setClubAffiliation(e.target.value)}
 										className="text-yellow-400 focus:ring-yellow-400"
 									/>
 									<span className="text-stone-700 dark:text-stone-300">
-										Lucan BMX
+										Courtown BMX
 									</span>
 								</label>
 								<label className="flex items-center space-x-3">
@@ -258,25 +286,23 @@ export default function LogPage() {
 							</select>
 						</div>
 
-						{/* License Number - Only for members and visitors */}
-						{!requiresPayment && (
-							<div className="space-y-2">
-								<label
-									htmlFor="license"
-									className="block text-base font-semibold text-stone-800 dark:text-stone-100"
-								>
-									CI License Number *
-								</label>
-								<input
-									id="license"
-									type="text"
-									value={licenseNumber}
-									onChange={(e) => setLicenseNumber(e.target.value)}
-									required
-									className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
-								/>
-							</div>
-						)}
+						{/* License Number - For all users */}
+						<div className="space-y-2">
+							<label
+								htmlFor="license"
+								className="block text-base font-semibold text-stone-800 dark:text-stone-100"
+							>
+								CI License Number *
+							</label>
+							<input
+								id="license"
+								type="text"
+								value={licenseNumber}
+								onChange={(e) => setLicenseNumber(e.target.value)}
+								required
+								className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
+							/>
+						</div>
 
 						{/* Payment Section for Visitors */}
 						{requiresPayment && (
@@ -291,23 +317,6 @@ export default function LogPage() {
 									<p className="text-yellow-600 dark:text-yellow-400 text-xs mt-1">
 										Visitors must have a valid Cycling Ireland license
 									</p>
-								</div>
-
-								<div className="space-y-2">
-									<label
-										htmlFor="license-visitor"
-										className="block text-base font-semibold text-stone-800 dark:text-stone-100"
-									>
-										CI License Number *
-									</label>
-									<input
-										id="license-visitor"
-										type="text"
-										value={licenseNumber}
-										onChange={(e) => setLicenseNumber(e.target.value)}
-										required
-										className="w-full px-4 py-2 rounded-lg border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
-									/>
 								</div>
 
 								<div className="space-y-2">
