@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import SessionProviderWrapper from "./components/SessionProviderWrapper"; // Import the new wrapper
 
 const inter = Inter({
 	subsets: ["latin"],
@@ -28,7 +29,7 @@ export default function RootLayout({
 			style={{ scrollBehavior: "smooth" }}
 		>
 			<body className="bg-white text-gray-900 scroll-smooth overflow-x-hidden">
-				{children}
+				<SessionProviderWrapper>{children}</SessionProviderWrapper>
 			</body>
 		</html>
 	);

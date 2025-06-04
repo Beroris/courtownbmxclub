@@ -1,6 +1,7 @@
 import Navigation from "./components/Navigation";
 import Carousel from "./components/Carousel";
 import Image from "next/image";
+import TrackGallery from "./components/TrackGallery";
 
 export default function Home() {
 	return (
@@ -96,7 +97,7 @@ export default function Home() {
 			{/* Divider */}
 			<div className="w-full h-px bg-gradient-to-r from-transparent via-stone-300 dark:via-stone-700 to-transparent animate-pulse"></div>
 
-			{/* Track Features - Text Left, Image Right */}
+			{/* Track Features - Enhanced with Gallery */}
 			<section className="py-16 bg-stone-50 dark:bg-stone-900">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -122,7 +123,7 @@ export default function Home() {
 									<ul className="space-y-2 ml-4">
 										<li className="flex items-start">
 											<span className="text-purple-400 mr-2">•</span>
-											8-meter starting hill with professional gate system
+											3-meter starting hill with professional gate system
 										</li>
 										<li className="flex items-start">
 											<span className="text-purple-400 mr-2">•</span>
@@ -140,18 +141,9 @@ export default function Home() {
 								</div>
 							</div>
 						</div>
-						<div className="flex justify-center transform hover:scale-[1.02] transition-transform duration-500">
-							<div className="rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 relative group">
-								<Image
-									src="/images/carousel/carousel3.jpeg"
-									alt="BMX Track Features"
-									width={600}
-									height={400}
-									className="object-cover transform group-hover:scale-105 transition-transform duration-700"
-								/>
-								<div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-							</div>
-						</div>
+
+						{/* Track Gallery */}
+						<TrackGallery />
 					</div>
 				</div>
 			</section>
