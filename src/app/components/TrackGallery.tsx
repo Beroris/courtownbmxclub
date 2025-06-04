@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
 interface TrackImage {
@@ -9,65 +9,83 @@ interface TrackImage {
 }
 
 const trackImages: TrackImage[] = [
-	{ src: "/images/track/track1.jpeg", alt: "BMX Track Overview" },
-	{ src: "/images/track/track2.jpeg", alt: "BMX Track Overview of End" },
-	{ src: "/images/track/track5.jpeg", alt: "BMX Track Overview Side View" },
+	{
+		src: "/images/track/track1.jpeg",
+		alt: "Professional BMX starting gate and first jump section",
+	},
+	{
+		src: "/images/track/track2.jpeg",
+		alt: "BMX track rhythm section with multiple tabletop jumps",
+	},
 	{
 		src: "/images/track/track3.jpeg",
-		alt: "BMX Track Overview from Entrance",
+		alt: "Banked turn section of the BMX track",
 	},
-	{ src: "/images/track/track4.jpeg", alt: "BMX Track Overview of Start" },
+	{
+		src: "/images/track/track4.jpeg",
+		alt: "Straight section with technical jump sequence",
+	},
+	{
+		src: "/images/track/track5.jpeg",
+		alt: "Final section approaching finish line",
+	},
 ];
 
 export default function TrackGallery() {
-	const [currentImageIndex, setCurrentImageIndex] = useState(0);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [currentImageIndex, setCurrentImageIndex] = useState(0);
 	const modalRef = useRef<HTMLDivElement>(null);
 	const closeButtonRef = useRef<HTMLButtonElement>(null);
 
+	// Handle escape key to close modal
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === "Escape" && isModalOpen) {
+			if (event.key === "Escape") {
 				setIsModalOpen(false);
 			}
 		};
 
-		document.addEventListener("keydown", handleKeyDown);
+		if (isModalOpen) {
+			document.addEventListener("keydown", handleKeyDown);
+			closeButtonRef.current?.focus();
+		}
+
 		return () => {
 			document.removeEventListener("keydown", handleKeyDown);
 		};
 	}, [isModalOpen]);
 
+	// Focus trap for modal
 	useEffect(() => {
-		if (isModalOpen) {
-			closeButtonRef.current?.focus();
-			const focusableElements = modalRef.current?.querySelectorAll(
+		if (isModalOpen && modalRef.current) {
+			const modalElement = modalRef.current;
+			const focusableElements = modalElement.querySelectorAll(
 				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
 			);
-			if (focusableElements && focusableElements.length > 0) {
-				const firstElement = focusableElements[0] as HTMLElement;
-				const lastElement = focusableElements[
-					focusableElements.length - 1
-				] as HTMLElement;
+			const firstElement = focusableElements[0] as HTMLElement;
+			const lastElement = focusableElements[
+				focusableElements.length - 1
+			] as HTMLElement;
 
+			if (focusableElements.length > 0) {
 				const trapFocus = (event: KeyboardEvent) => {
-					if (event.key !== "Tab") return;
-
-					if (event.shiftKey) {
-						if (document.activeElement === firstElement) {
-							lastElement.focus();
-							event.preventDefault();
-						}
-					} else {
-						if (document.activeElement === lastElement) {
-							firstElement.focus();
-							event.preventDefault();
+					if (event.key === "Tab") {
+						if (event.shiftKey) {
+							if (document.activeElement === firstElement) {
+								lastElement.focus();
+								event.preventDefault();
+							}
+						} else {
+							if (document.activeElement === lastElement) {
+								firstElement.focus();
+								event.preventDefault();
+							}
 						}
 					}
 				};
-				modalRef.current?.addEventListener("keydown", trapFocus);
+				modalElement.addEventListener("keydown", trapFocus);
 				return () => {
-					modalRef.current?.removeEventListener("keydown", trapFocus);
+					modalElement.removeEventListener("keydown", trapFocus);
 				};
 			}
 		}
@@ -259,11 +277,10 @@ export default function TrackGallery() {
 									>
 										<Image
 											src={image.src}
-											alt=""
+											alt={image.alt}
 											width={64}
 											height={48}
 											className="w-full h-full object-cover"
-											aria-hidden="true"
 										/>
 									</button>
 								))}

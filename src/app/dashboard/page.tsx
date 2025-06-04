@@ -1,17 +1,35 @@
 "use client"; // Added this directive
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation"; // Changed from next/router
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import React from "react"; // Import React for component structure and typing
 import Navigation from "../components/Navigation";
+
+// Define interfaces for type safety
+interface LogEntry {
+	id: string;
+	created_at: string;
+	name: string;
+	license_number: string | null;
+	phone_number: string;
+	club_affiliation: string;
+	membership_type: "member" | "guest";
+	payment_method: "member" | "cash" | "online" | null;
+	payment_status: string | null;
+	waiver_agreed: boolean;
+}
+
+interface UserProfile {
+	role: string;
+}
 
 export default function Dashboard() {
 	const supabase = useSupabaseClient();
 	const user = useUser();
 	const router = useRouter();
 
-	const [logs, setLogs] = useState<any[]>([]);
+	const [logs, setLogs] = useState<LogEntry[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [isAdmin, setIsAdmin] = useState(false);
@@ -22,6 +40,73 @@ export default function Dashboard() {
 	const [activeFilter, setActiveFilter] = useState<
 		"today" | "yesterday" | "week" | "custom"
 	>("today");
+
+	const fetchLogs = useCallback(
+		async (date: string) => {
+			setLoading(true);
+			setError(null);
+
+			try {
+				const { data, error } = await supabase
+					.from("log_entries")
+					.select("*")
+					.gte("created_at", `${date}T00:00:00.000Z`)
+					.lte("created_at", `${date}T23:59:59.999Z`)
+					.order("created_at", { ascending: false });
+
+				if (error) {
+					console.error("Error fetching logs:", error);
+					setError(`Failed to fetch logs: ${error.message}`);
+				} else {
+					setLogs((data as LogEntry[]) || []);
+				}
+			} catch (err) {
+				const errorMessage =
+					err instanceof Error ? err.message : "An unknown error occurred";
+				setError(`An unexpected error occurred: ${errorMessage}`);
+			} finally {
+				setLoading(false);
+			}
+		},
+		[supabase]
+	);
+
+	const fetchWeekLogs = useCallback(
+		async (startDate: string) => {
+			setLoading(true);
+			setError(null);
+
+			try {
+				const start = new Date(startDate);
+				const end = new Date(startDate);
+				end.setDate(start.getDate() + 6); // Sunday
+
+				const { data, error } = await supabase
+					.from("log_entries")
+					.select("*")
+					.gte(
+						"created_at",
+						`${start.toISOString().split("T")[0]}T00:00:00.000Z`
+					)
+					.lte("created_at", `${end.toISOString().split("T")[0]}T23:59:59.999Z`)
+					.order("created_at", { ascending: false });
+
+				if (error) {
+					console.error("Error fetching logs:", error);
+					setError(`Failed to fetch logs: ${error.message}`);
+				} else {
+					setLogs((data as LogEntry[]) || []);
+				}
+			} catch (err) {
+				const errorMessage =
+					err instanceof Error ? err.message : "An unknown error occurred";
+				setError(`An unexpected error occurred: ${errorMessage}`);
+			} finally {
+				setLoading(false);
+			}
+		},
+		[supabase]
+	);
 
 	useEffect(() => {
 		async function checkAuthAndFetchLogs() {
@@ -51,10 +136,11 @@ export default function Dashboard() {
 				return;
 			}
 
-			if (!profile || profile.role !== "admin") {
+			const typedProfile = profile as UserProfile;
+			if (!typedProfile || typedProfile.role !== "admin") {
 				console.warn(
 					"Authorization check failed: Profile data inconsistent or user is not an admin.",
-					{ userId: user.id, profileData: profile }
+					{ userId: user.id, profileData: typedProfile }
 				);
 				setError(
 					"You do not have administrative access. Please log in with an admin account."
@@ -69,61 +155,7 @@ export default function Dashboard() {
 		}
 
 		checkAuthAndFetchLogs();
-	}, [user, router, supabase, filterDate]);
-
-	const fetchLogs = async (date: string) => {
-		setLoading(true);
-		setError(null);
-
-		try {
-			const { data, error } = await supabase
-				.from("log_entries")
-				.select("*")
-				.gte("created_at", `${date}T00:00:00.000Z`)
-				.lte("created_at", `${date}T23:59:59.999Z`)
-				.order("created_at", { ascending: false });
-
-			if (error) {
-				console.error("Error fetching logs:", error);
-				setError(`Failed to fetch logs: ${error.message}`);
-			} else {
-				setLogs(data || []);
-			}
-		} catch (err: any) {
-			setError(`An unexpected error occurred: ${err.message}`);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const fetchWeekLogs = async (startDate: string) => {
-		setLoading(true);
-		setError(null);
-
-		try {
-			const start = new Date(startDate);
-			const end = new Date(startDate);
-			end.setDate(start.getDate() + 6); // Sunday
-
-			const { data, error } = await supabase
-				.from("log_entries")
-				.select("*")
-				.gte("created_at", `${start.toISOString().split("T")[0]}T00:00:00.000Z`)
-				.lte("created_at", `${end.toISOString().split("T")[0]}T23:59:59.999Z`)
-				.order("created_at", { ascending: false });
-
-			if (error) {
-				console.error("Error fetching logs:", error);
-				setError(`Failed to fetch logs: ${error.message}`);
-			} else {
-				setLogs(data || []);
-			}
-		} catch (err: any) {
-			setError(`An unexpected error occurred: ${err.message}`);
-		} finally {
-			setLoading(false);
-		}
-	};
+	}, [user, router, supabase, filterDate, fetchLogs]);
 
 	const handleLogout = async () => {
 		setLoading(true);
@@ -373,7 +405,7 @@ export default function Dashboard() {
 									</tr>
 								</thead>
 								<tbody className="bg-white dark:bg-stone-800 divide-y divide-stone-200 dark:divide-stone-700">
-									{logs.map((log: any) => (
+									{logs.map((log: LogEntry) => (
 										<tr
 											key={log.id}
 											className="hover:bg-stone-50 dark:hover:bg-stone-700 transition-colors duration-150"
