@@ -29,6 +29,10 @@ const trackImages: TrackImage[] = [
 		src: "/images/track/track5.jpeg",
 		alt: "Final section approaching finish line",
 	},
+	{
+		src: "/images/track/track6.jpeg",
+		alt: "Aerial view of the BMX track as it started",
+	},
 ];
 
 export default function TrackGallery() {
@@ -185,7 +189,7 @@ export default function TrackGallery() {
 						{/* Close button */}
 						<button
 							ref={closeButtonRef}
-							className="absolute top-4 right-4 text-white bg-black/50 rounded-full p-2 hover:bg-black/70 transition-colors z-10"
+							className="absolute top-5 right-5 text-white bg-black/50 rounded-full p-1.5 md:p-2 hover:bg-black/70 transition-colors z-10"
 							onClick={() => setIsModalOpen(false)}
 							aria-label="Close gallery"
 						>
