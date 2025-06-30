@@ -3,6 +3,11 @@
 import React, { useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Navigation from "../components/Navigation";
+import { loadStripe } from "@stripe/stripe-js"; // Import loadStripe from Stripe.js library
+
+const stripePromise = loadStripe(
+	process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 export default function LogPage() {
 	const [name, setName] = useState("");
@@ -10,17 +15,20 @@ export default function LogPage() {
 	const [phoneNumber, setPhoneNumber] = useState("");
 	const [clubAffiliation, setClubAffiliation] = useState("courtown");
 	const [membershipType, setMembershipType] = useState("member");
-	const [paymentMethod, setPaymentMethod] = useState("online");
+	const [paymentMethod, setPaymentMethod] = useState("online"); // Default to online
 	const [waiverAgreed, setWaiverAgreed] = useState(false);
 	const [message, setMessage] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	const requiresPayment = membershipType === "guest";
 
+	// --- Form Submission Handler ---
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setMessage("");
+		setLoading(true);
 
-		// Validation
+		// --- Validation ---
 		if (
 			!name ||
 			!phoneNumber ||
@@ -31,47 +39,54 @@ export default function LogPage() {
 			setMessage(
 				"Error: All fields are required and waiver must be agreed to!"
 			);
+			setLoading(false);
 			return;
 		}
 
-		// Validate that the name contains only letters (including accented letters) and spaces
 		const namePattern = /^[A-Za-zÀ-ÿ\s]+$/;
 		if (!namePattern.test(name)) {
 			setMessage("Error: Name must contain only letters and spaces.");
+			setLoading(false);
 			return;
 		}
 
-		// Validate phone number (simple pattern for Irish numbers)
 		const phonePattern = /^[\d\s\+\-\(\)]+$/;
 		if (!phonePattern.test(phoneNumber)) {
 			setMessage("Error: Please enter a valid phone number.");
+			setLoading(false);
 			return;
 		}
 
-		// Validate that the license number contains at least one number
 		const licensePattern = /\d/;
 		if (!licensePattern.test(licenseNumber)) {
-			setMessage("Error: Invalid license number");
+			setMessage(
+				"Error: Invalid license number (must contain at least one digit)."
+			);
+			setLoading(false);
 			return;
 		}
 
-		// Determine payment status and method based on membership type
-		let paymentStatus = null;
-		let finalPaymentMethod = null;
-
-		if (membershipType === "member") {
-			paymentStatus = "yearly";
-			finalPaymentMethod = "member";
-		} else if (membershipType === "guest") {
-			if (paymentMethod === "cash") {
-				paymentStatus = "cash";
-			} else {
-				paymentStatus = null; // For online payments, will be updated when payment is processed
-			}
-			finalPaymentMethod = paymentMethod;
+		if (membershipType === "guest" && paymentMethod === "online") {
+			await handleOnlinePayment();
+		} else {
+			await submitLogEntryToSupabase(paymentMethod);
 		}
+		setLoading(false);
+	};
 
+	// --- Supabase Insertion Function ---
+	const submitLogEntryToSupabase = async (finalPaymentMethod: string) => {
 		try {
+			let paymentStatus = null;
+			if (membershipType === "member") {
+				paymentStatus = "yearly";
+			} else if (membershipType === "guest" && finalPaymentMethod === "cash") {
+				paymentStatus = "cash_pending";
+				setMessage(
+					"Please pay €5 in cash to a staff member. Your sign-in is pending payment confirmation."
+				);
+			}
+
 			const { error } = await supabase.from("log_entries").insert([
 				{
 					name,
@@ -82,39 +97,104 @@ export default function LogPage() {
 					payment_method: finalPaymentMethod,
 					payment_status: paymentStatus,
 					waiver_agreed: waiverAgreed,
+					stripe_session_id: null,
+					stripe_payment_intent_id: null,
+					amount_paid: null,
+					currency: null,
 				},
 			]);
 
 			if (error) {
-				setMessage(`Error: ${error.message}`);
+				setMessage(`Error saving sign-in: ${error.message}`);
 				return;
 			}
 
-			// Clear the form
-			setName("");
-			setLicenseNumber("");
-			setPhoneNumber("");
-			setClubAffiliation("courtown");
-			setMembershipType("member");
-			setPaymentMethod("online");
-			setWaiverAgreed(false);
-			setMessage("Log entry saved successfully!");
+			if (paymentStatus !== "cash_pending") {
+				setName("");
+				setLicenseNumber("");
+				setPhoneNumber("");
+				setClubAffiliation("courtown");
+				setMembershipType("member");
+				setPaymentMethod("online");
+				setWaiverAgreed(false);
+				setMessage("Sign-in saved successfully!");
+			}
 		} catch (err: unknown) {
 			if (err instanceof Error) {
-				setMessage(`Error: ${err.message}`);
+				setMessage(`Error submitting sign-in: ${err.message}`);
 			} else {
-				setMessage("An unknown error occurred.");
+				setMessage("An unknown error occurred during sign-in submission.");
 			}
 		}
 	};
 
-	const handlePayment = () => {
-		// Placeholder for payment functionality
-		if (paymentMethod === "cash") {
-			setMessage("Please pay €5 in cash to staff member.");
-		} else {
-			setMessage("Online payment functionality coming soon!");
+	// --- Stripe Online Payment Initiation ---
+	const handleOnlinePayment = async () => {
+		setMessage("");
+		setLoading(true);
+
+		try {
+			const response = await fetch("/api/create-checkout-session", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					riderName: name,
+					phoneNumber: phoneNumber,
+					licenseNumber: licenseNumber,
+					clubAffiliation: clubAffiliation,
+					// You can add more data here if needed for tracking
+				}),
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				throw new Error(
+					`Failed to create checkout session: ${
+						errorData.message || response.statusText
+					}`
+				);
+			}
+
+			const { sessionId } = await response.json();
+
+			// Redirect the user to Stripe Checkout
+			const stripe = await stripePromise;
+			if (!stripe) {
+				throw new Error("Stripe.js failed to load. Please try again.");
+			}
+			const { error } = await stripe.redirectToCheckout({
+				sessionId,
+			});
+
+			// This code only runs if redirectToCheckout fails for some reason
+			if (error) {
+				console.error("Stripe redirect error:", error);
+				setMessage(
+					`Payment initiation failed: ${error.message}. Please try again.`
+				);
+			}
+		} catch (error: any) {
+			console.error("Error during online payment process:", error);
+			setMessage(
+				`An unexpected error occurred: ${error.message}. Please try again.`
+			);
+		} finally {
+			// setLoading(false); // Don't set false here, as successful redirect means user leaves page
+			// If redirect fails, the error catch will set message and then setLoading(false) in handleSubmit
 		}
+	};
+
+	// Helper to determine the text for the main form submission button
+	const mainSubmitButtonText = () => {
+		if (loading) {
+			return "Processing...";
+		}
+		if (requiresPayment && paymentMethod === "online") {
+			return "Proceed to Online Payment";
+		}
+		return "Submit Sign-In"; // Default for members or cash guests
 	};
 
 	return (
@@ -336,18 +416,6 @@ export default function LogPage() {
 										<option value="cash">Pay in Cash</option>
 									</select>
 								</div>
-
-								<div className="flex justify-center">
-									<button
-										type="button"
-										onClick={handlePayment}
-										className="max-w-xs w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg shadow transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-									>
-										{paymentMethod === "cash"
-											? "Confirm Cash Payment"
-											: "Pay Online"}
-									</button>
-								</div>
 							</div>
 						)}
 
@@ -385,11 +453,13 @@ export default function LogPage() {
 							</label>
 						</div>
 
+						{/* Main Submit Button - This button now handles ALL submissions */}
 						<button
 							type="submit"
+							disabled={loading} // Disable if loading
 							className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg shadow transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
 						>
-							Submit Sign-In
+							{mainSubmitButtonText()} {/* Dynamic text based on state */}
 						</button>
 					</form>
 
